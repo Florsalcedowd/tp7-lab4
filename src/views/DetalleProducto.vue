@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "DetalleProducto",
   components: {},
@@ -64,17 +65,16 @@ export default {
     };
   },
   methods: {
-    async getInstrumentoXId() {
+    getInstrumentoXId() {
       const parametroId = this.$route.params.id;
-      const res = await fetch(
-        "http://localhost:9001/api/v1/instrumentos/" + parametroId
-      );
-      const resJson = await res.json();
-      this.instrumentoEncontrado = resJson;
-      /* 
-      this.instrumentoEncontrado = await resJson.instrumentos.find(
-        (instrumento) => instrumento.id === parametroId
-      ); */
+      axios
+        .get("http://localhost:9001/api/v1/instrumentos/" + parametroId)
+        .then((res) => {
+          this.instrumentoEncontrado = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

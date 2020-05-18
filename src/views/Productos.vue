@@ -20,6 +20,7 @@
 
 <script>
 import CardInstrumento from "@/components/CardInstrumento.vue";
+import axios from "axios";
 
 export default {
   name: "Productos",
@@ -35,11 +36,15 @@ export default {
     };
   },
   methods: {
-    async getInstrumentos() {
-      const res = await fetch("http://localhost:9001/api/v1/instrumentos/all");
-      const resJson = await res.json();
-      console.log(resJson);
-      this.instrumentosData = resJson;
+    getInstrumentos() {
+      axios
+        .get("http://localhost:9001/api/v1/instrumentos/all")
+        .then((res) => {
+          this.instrumentosData = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
