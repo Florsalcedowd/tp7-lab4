@@ -1,29 +1,44 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import Productos from "../views/Productos.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-  const routes = [
+const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/productos",
+    name: "Productos",
+    component: Productos,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    path: "/",
+    name: "Home",
+    component: Home,
+  },
+  {
+    path: "/dondeEstamos",
+    name: "DondeEstamos",
+    //esta forma permite lazy-load es decir que la carga del html + el java script se cargue al
+    //momento de llamar a la pagina, si lo hacemos como en Home, se carga al iniciar la aplicación
+    component: () => import("../views/DondeEstamos.vue"),
+  },
+  {
+    path: "/detalle/:id",
+    name: "DetalleProducto",
+    component: () => import("../views/DetalleProducto.vue"),
+  },
+  {
+    path: "/abm",
+    name: "ABM",
+    component: () => import("../views/Abm.vue"),
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
