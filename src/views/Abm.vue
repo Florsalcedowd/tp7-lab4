@@ -5,6 +5,7 @@
         <h1>ABM de instrumentos</h1>
       </div>
       <div class="col">
+        <!-- boton que abre la ventana modal para añadir un instrumento -->
         <button
           class="btn float-right btn-primary"
           v-b-modal.modal
@@ -14,6 +15,7 @@
         </button>
       </div>
     </div>
+    <!-- Tabla que muestra el listado de datos -->
     <table class="table">
       <thead>
         <tr>
@@ -42,6 +44,7 @@
           <td>{{ instrumento.cantidadVendida }}</td>
           <td>{{ instrumento.imagen }}</td>
           <td>
+            <!-- Boton que abre la ventana modal para editar un instrumento -->
             <button
               class="btn btn-block btn-success"
               v-b-modal.modal
@@ -49,6 +52,7 @@
             >
               Editar
             </button>
+            <!-- Boton para eliminar un instrumento -->
             <button
               class="btn btn-block btn-danger"
               @click="deleteInstrumento(instrumento)"
@@ -60,6 +64,7 @@
       </tbody>
     </table>
 
+    <!-- Ventana modal -->
     <b-modal
       id="modal"
       ref="modal-ref"
@@ -68,6 +73,7 @@
       @hidden="resetModal"
       @ok="handleOk"
     >
+      <!-- Formulario -->
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
           id="nobreInstrumento"
@@ -87,8 +93,8 @@
           </b-form-invalid-feedback>
         </b-form-group>
         <b-row>
-          <b-col
-            ><b-form-group
+          <b-col>
+            <b-form-group
               id="marcaInstrumento"
               label="Marca:"
               label-for="marca"
@@ -104,10 +110,10 @@
               <b-form-invalid-feedback id="input-1-live-feedback">
                 ¡Este campo es requerido!
               </b-form-invalid-feedback>
-            </b-form-group></b-col
-          >
-          <b-col
-            ><b-form-group
+            </b-form-group>
+          </b-col>
+          <b-col>
+            <b-form-group
               id="modeloInstrumento"
               label="Modelo"
               label-for="modelo"
@@ -124,8 +130,8 @@
               <b-form-invalid-feedback id="input-1-live-feedback">
                 ¡Este campo es requerido!
               </b-form-invalid-feedback>
-            </b-form-group></b-col
-          >
+            </b-form-group>
+          </b-col>
         </b-row>
 
         <b-form-group
@@ -184,8 +190,8 @@
               </b-form-invalid-feedback>
             </b-form-group>
           </b-col>
-          <b-col
-            ><b-form-group
+          <b-col>
+            <b-form-group
               id="vendidosInstrumento"
               label="Cant. vendida"
               label-for="cantidadVendida"
@@ -202,8 +208,8 @@
               <b-form-invalid-feedback id="input-1-live-feedback">
                 ¡Este campo es requerido!
               </b-form-invalid-feedback>
-            </b-form-group></b-col
-          >
+            </b-form-group>
+          </b-col>
         </b-row>
 
         <b-form-group>
@@ -226,7 +232,9 @@
           </div>
         </b-form-group>
       </form>
+      <!-- fin formulario -->
     </b-modal>
+    <!-- fin ventana modal -->
   </div>
 </template>
 
@@ -257,7 +265,6 @@ export default {
         cantidadVendida: null,
         descripcion: null,
       },
-      selectedFile: null,
     };
   },
   validations: {
@@ -300,6 +307,7 @@ export default {
       const { $dirty, $error } = this.$v.instrumentoActual[campo];
       return $dirty ? !$error : null;
     },
+    /* Método que trae del servidor la lista completa de instrumentos */
     getInstrumentos() {
       axios
         .get("http://localhost:9001/api/v1/instrumentos/all")
@@ -310,9 +318,11 @@ export default {
           console.log(err);
         });
     },
+    /* Método que me permite cerrar la ventana modal */
     hideModal() {
       this.$refs["modal-ref"].hide();
     },
+    /* Método que se ejecuta al cerrar la ventana modal para resetear los valores del instrumento */
     resetModal() {
       this.instrumentoActual = {
         id: 0,
@@ -326,19 +336,23 @@ export default {
         descripcion: null,
       };
     },
+    /* Método que llamo al hacer click en el botón "Editar" para asignar el instrumento de la fila al "instrumentoActual" que voy a usar en el formulario */
     setEditar(instrumento) {
       this.tituloModal = "Editar";
       this.instrumentoActual = instrumento;
     },
+    /* Asigno el título Añadir a la ventana modal cuando hago click en el botón "Añadir" */
     setTituloAdd() {
       this.tituloModal = "Añadir";
     },
+    /* Método que controla el evento click sobre el botón "ok" del footer del modal */
     handleOk(bvModalEvt) {
       // Prevent modal from closing
       bvModalEvt.preventDefault();
       // Trigger submit handler
       this.handleSubmit();
     },
+    /* Método que hace el submit del formulario */
     handleSubmit() {
       if (this.instrumentoActual.id !== 0) {
         this.updateInstrumento(this.instrumentoActual);
@@ -346,6 +360,7 @@ export default {
         this.addInstrumento(this.instrumentoActual);
       }
     },
+    /* Metodo en el que me comunico con el servidor para AGREGAR un instrumento */
     addInstrumento(instrumento) {
       axios
         .post("http://localhost:9001/api/v1/instrumentos/", instrumento)
@@ -360,6 +375,7 @@ export default {
           alert("Ha ocurrido un error, intenta más tarde!");
         });
     },
+    /* Método en el que me comunico con el servidor para ACTUALIZAR un instrumento */
     updateInstrumento(instrumento) {
       axios
         .put(
@@ -376,6 +392,7 @@ export default {
           alert("Ha ocurrido un error, intenta más tarde!");
         });
     },
+    /* Método en el que me comunico con el servidor para ELIMINAR un instrumento */
     deleteInstrumento(instrumento) {
       const confirmar = confirm("Seguro deseas eliminar este instrumento?");
       if (confirmar) {
@@ -391,6 +408,7 @@ export default {
           });
       }
     },
+    /* Método en el que me comunico con el servidor para agregar una imagen */
     onImageUpload(event) {
       const data = new FormData();
       data.append("file", event.target.files[0]);
