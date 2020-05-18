@@ -418,7 +418,7 @@ export default {
       axios
         .post("http://localhost:9001/api/v1/instrumentos/images", data)
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
         })
         .catch((e) => {
           console.log(e);
