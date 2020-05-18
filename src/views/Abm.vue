@@ -123,8 +123,7 @@
                 type="text"
                 v-model="$v.instrumentoActual.modelo.$model"
                 :state="validateState('modelo')"
-                placeholder="Modelo"
-                title="Ingrese el modelo del instrumento..."
+                placeholder="Ingrese el modelo del instrumento..."
                 required
               ></b-form-input>
               <b-form-invalid-feedback id="input-1-live-feedback">
@@ -201,8 +200,7 @@
                 type="number"
                 v-model="$v.instrumentoActual.cantidadVendida.$model"
                 :state="validateState('cantidadVendida')"
-                placeholder="Cantidad Vendida"
-                title="Ingrese ela cantidad vendida del instrumento..."
+                placeholder="Cantidad vendida"
                 required
               ></b-form-input>
               <b-form-invalid-feedback id="input-1-live-feedback">
@@ -212,13 +210,17 @@
           </b-col>
         </b-row>
 
-        <b-form-group>
+        <b-form-group
+          id="imagenInstrumento"
+          label="Imagen del instrumento"
+          label-for="imagen"
+        >
           <b-form-input
             id="imagen"
             type="text"
             v-model="$v.instrumentoActual.imagen.$model"
             :state="validateState('imagen')"
-            placeholder="Descripcion"
+            placeholder="Imagen"
             title="Ingrese la descripcion del instrumento..."
             disabled
           ></b-form-input>
@@ -251,7 +253,6 @@ export default {
   },
   data() {
     return {
-      show: false,
       tituloModal: null,
       instrumentosData: [],
       instrumentoActual: {
